@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sushidushi!</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff7f9;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #e0316f;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 30px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 35px;
+}
+
+.card {
+    background: white;
+    width: 240px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    overflow: hidden;
+    padding: 20px 10px;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h3 {
+    margin: 10px 0;
+    font-size: 17px;
+}
+
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    max-width: 350px;
+    z-index: 1000;
+    text-align: center;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #e0316f;
+}
+
+.popup p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-weight: bold;
+    color: #e0316f;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e0316f;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🍣 Sushidushi! 🍣</h1>
+<p>Klik op een sushi om meer te zien!</p>
+
+<div class="container" id="sushiContainer"></div>
+
+<div id="popup" class="popup">
+    <h2 id="popupTitle"></h2>
+    <p id="popupInfo"></p>
+    <p class="price" id="popupPrice"></p>
+    <div class="close-btn" onclick="closePopup()">Sluiten</div>
+</div>
+
+<script>
+// Basis sushi info + prijs
+const sushiData = {
+    "Nigiri": { info: "Rijst met een plakje vis erbovenop. Klassiek en simpel.", price: "€2,50" },
+    "Maki": { info: "Rijst en vulling gerold in zeewier.", price: "€3,00" },
+    "Sashimi": { info: "Dunne plakjes rauwe vis zonder rijst.", price: "€4,00" },
+    "California Roll": { info: "Met avocado en krab. Populair in Amerika.", price: "€3,50" },
+    "Dragon Roll": { info: "Vaak met paling en speciale saus.", price: "€4,50" },
+    "Rainbow Roll": { info: "Maki met verschillende soorten vis bovenop.", price: "€4,00" },
+    "Tempura Roll": { info: "Met gefrituurde ingrediënten voor een krokante bite.", price: "€3,80" },
+    "Spicy Tuna Roll": { info: "Met pittige tonijn en rijst.", price: "€3,90" },
+    "Salmon Roll": { info: "Maki met zalm.", price: "€3,50" },
+    "Avocado Roll": { info: "Vegetarisch met avocado.", price: "€2,80" }
+};
+
+// 200 sushi variaties
+const sushiNames = [];
+const baseSushi = Object.keys(sushiData);
+
+for (let i = 1; i <= 20; i++) {
+    baseSushi.forEach(type => sushiNames.push(type + " Special " + i));
+}
+sushiNames.length = 200;
+
+const container = document.getElementById("sushiContainer");
+
+sushiNames.forEach(name => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = name;
+
+    card.appendChild(title);
+
+    // Klik-popup
+    card.onclick = () => {
+        const baseName = name.split(" Special")[0];
+        const data = sushiData[baseName];
+        document.getElementById("popupTitle").textContent = name;
+        document.getElementById("popupInfo").textContent = data ? data.info : "Heerlijke sushi!";
+        document.getElementById("popupPrice").textContent = data ? "Prijs: " + data.price : "";
+        document.getElementById("popup").style.display = "block";
+    }
+
+    container.appendChild(card);
+});
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
